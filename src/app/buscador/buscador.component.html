@@ -1,0 +1,25 @@
+<h2>Buscador</h2>
+
+<form>
+  <div class="form-group">
+
+  </div>
+  <button class="btn btn-primary" (click)="search()">Buscar</button>
+</form>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Descripción</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let platillo of searchResults">
+      <td>{{ platillo.id }}</td>
+      <td>{{ platillo.nombre }}</td>
+      <td>{{ platillo.descripcion }}</td>
+    </tr>
+  </tbody>
+</table>

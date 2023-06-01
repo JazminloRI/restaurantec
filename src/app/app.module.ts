@@ -9,6 +9,10 @@ import { VerProductoComponent } from './ver-producto/ver-producto.component';
 import { AgregarProductoComponent } from './agregar-producto/agregar-producto.component';
 import { EliminarProductoComponent } from './eliminar-producto/eliminar-producto.component';
 import { ContactoComponent } from './contacto/contacto.component';
+import { MenuComponent } from './menu/menu.component';
+import { BuscadorComponent } from './buscador/buscador.component';
+
+
 
 @NgModule({
   declarations: [
@@ -17,7 +21,10 @@ import { ContactoComponent } from './contacto/contacto.component';
     VerProductoComponent,
     AgregarProductoComponent,
     EliminarProductoComponent,
-    ContactoComponent
+    ContactoComponent,
+    MenuComponent,
+    BuscadorComponent,
+
   ],
   imports: [
     BrowserModule,

@@ -5,6 +5,7 @@ import { AgregarProductoComponent } from './agregar-producto/agregar-producto.co
 import { ContactoComponent } from './contacto/contacto.component';
 import { EliminarProductoComponent } from './eliminar-producto/eliminar-producto.component';
 import { VerProductoComponent } from './ver-producto/ver-producto.component';
+import { BuscadorComponent } from './buscador/buscador.component';
 
 const routes: Routes = [
   { path :'' ,redirectTo:'home' , pathMatch:'full'},
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'contacto', component: ContactoComponent },
   { path: 'eliminarProducto', component: EliminarProductoComponent },
   { path: 'verProducto', component: VerProductoComponent },
+  { path: 'buscarProducto', component: BuscadorComponent },
 ];
 
 @NgModule({
