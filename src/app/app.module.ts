@@ -11,7 +11,7 @@ import { EliminarProductoComponent } from './eliminar-producto/eliminar-producto
 import { ContactoComponent } from './contacto/contacto.component';
 import { MenuComponent } from './menu/menu.component';
 import { BuscadorComponent } from './buscador/buscador.component';
-
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -24,6 +24,7 @@ import { BuscadorComponent } from './buscador/buscador.component';
     ContactoComponent,
     MenuComponent,
     BuscadorComponent,
+    FormsModule,
 
   ],
   imports: [
