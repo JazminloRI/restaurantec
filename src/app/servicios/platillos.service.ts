@@ -78,7 +78,6 @@ private _platillo:  BehaviorSubject<Platillo> = new BehaviorSubject(this.pl);
   }
 
   get(): Observable<Platillo[]> {
-    //return of(this.platillos);
     
     // Lógica para obtener los platillos de una API externa
 
