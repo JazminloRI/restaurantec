@@ -64,7 +64,7 @@ private _platillo:  BehaviorSubject<Platillo> = new BehaviorSubject(this.pl);
     return this.platillos$.pipe(
       take(1),
       switchMap(platillos => this._httpClient.post<Platillo>
-        ('https://api-rest-restaurantec-production.up.railway.app/api/dishes', platillo).pipe(
+        ('https://api-rest-restaurantec-production-6b65.up.railway.app/api/dishes', platillo).pipe(
           map((nuevoPlatillo) => {
 
               //Actualiza las tareas con la nueva tarea agregada
@@ -81,7 +81,7 @@ private _platillo:  BehaviorSubject<Platillo> = new BehaviorSubject(this.pl);
     
     // Lógica para obtener los platillos de una API externa
 
-    return this._httpClient.get<Platillo[]>('https://api-rest-restaurantec-production.up.railway.app/api/dishes').pipe(
+    return this._httpClient.get<Platillo[]>('https://api-rest-restaurantec-production-6b65.up.railway.app/api/dishes').pipe(
       tap((response: Platillo[]) => {
           this._objetoPlatillos.next(response);
       })
@@ -90,7 +90,7 @@ private _platillo:  BehaviorSubject<Platillo> = new BehaviorSubject(this.pl);
 
   getId(id: string): Observable<Platillo> {
 
-    return this._httpClient.get<Platillo>('https://api-rest-restaurantec-production.up.railway.app/api/dishes/'+id).pipe(
+    return this._httpClient.get<Platillo>('https://api-rest-restaurantec-production-6b65.up.railway.app/api/dishes/'+id).pipe(
       tap((response: Platillo) => {
           this._platillo.next(response);
           return response;
@@ -109,7 +109,7 @@ private _platillo:  BehaviorSubject<Platillo> = new BehaviorSubject(this.pl);
         return this.platillos$
                    .pipe(
                        take(1),
-                       switchMap(platillos => this._httpClient.patch<Platillo>('https://api-rest-restaurantec-production.up.railway.app/api/dishes/'+id, platillo).pipe(
+                       switchMap(platillos => this._httpClient.patch<Platillo>('https://api-rest-restaurantec-production-6b65.up.railway.app/api/dishes/'+id, platillo).pipe(
                            map((tareaActualizada) => {
 
                                // Busca el indice de la tarea actualizada
@@ -144,7 +144,7 @@ private _platillo:  BehaviorSubject<Platillo> = new BehaviorSubject(this.pl);
     return this.platillos$.pipe(
       take(1),
       switchMap(platillos => this._httpClient.delete
-        ('https://api-rest-restaurantec-production.up.railway.app/api/dishes/'+id).pipe(
+        ('https://api-rest-restaurantec-production-6b65.up.railway.app/api/dishes/'+id).pipe(
           map((fueEliminado) => {
 
               //busca el indice de la tarea eliminada dentro del objeto observable
