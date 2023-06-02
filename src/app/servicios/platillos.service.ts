@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, map, of, switchMap, take, tap, throwError } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 export interface Platillo {
-  id: number;
+  id: number|string;
   nombre: string;
   descripcion: string;
   cantidad: number;
@@ -38,51 +39,131 @@ private platillos: Platillo[] = [
     costo: 6.99
   }
 ];
-  constructor() { }
 
-  create(platillo: Platillo): Observable<void> {
-    this.platillos.push(platillo);
-    return of(undefined);
+private p: Platillo[] = [];
+private pl!: Platillo;
+
+private _objetoPlatillos:  BehaviorSubject<Platillo[]> = new BehaviorSubject(this.p);
+private _platillo:  BehaviorSubject<Platillo> = new BehaviorSubject(this.pl);
+
+  constructor(private _httpClient: HttpClient) { }
+
+  get platillos$(): Observable<Platillo[]> {
+    return this._objetoPlatillos.asObservable();
+  }
+
+  get platillo$(): Observable<Platillo> {
+    return this._platillo.asObservable();
+  }
+
+  create(platillo: Platillo): Observable<Platillo> {
+    //this.platillos.push(platillo);
+    //return of(undefined);
+    
     // Lógica para guardar el platillo en una API externa
-    // Ejemplo con HttpClient:
-    // return this.http.post('ruta-de-tu-api/platillos', platillo);
+    return this.platillos$.pipe(
+      take(1),
+      switchMap(platillos => this._httpClient.post<Platillo>
+        ('https://api-rest-restaurantec-production.up.railway.app/api/dishes', platillo).pipe(
+          map((nuevoPlatillo) => {
+
+              //Actualiza las tareas con la nueva tarea agregada
+              this._objetoPlatillos.next([nuevoPlatillo, ...platillos]);
+
+              // Retorna la nueva tarea agregada
+              return nuevoPlatillo;
+          })
+      ))
+  );
   }
 
   get(): Observable<Platillo[]> {
-    return of(this.platillos);
+    //return of(this.platillos);
+    
     // Lógica para obtener los platillos de una API externa
-    // Ejemplo con HttpClient:
-    // return this.http.get<Platillo[]>('ruta-de-tu-api/platillos');
+
+    return this._httpClient.get<Platillo[]>('https://api-rest-restaurantec-production.up.railway.app/api/dishes').pipe(
+      tap((response: Platillo[]) => {
+          this._objetoPlatillos.next(response);
+      })
+  );
+  }
+
+  getId(id: string): Observable<Platillo> {
+
+    return this._httpClient.get<Platillo>('https://api-rest-restaurantec-production.up.railway.app/api/dishes/'+id).pipe(
+      tap((response: Platillo) => {
+          this._platillo.next(response);
+          return response;
+      })
+  );
   }
 
 
-  getPlatilloById(id: number): Observable<Platillo | undefined> {
-    const platilloEncontrado = this.platillos.find((platillo) => platillo.id === id);
-    return of(platilloEncontrado);
-  }
-
-
-
-
-  update(platillo: Platillo): Observable<void> {
+  update(id: string, platillo: Platillo): Observable<Platillo> {
     const index = this.platillos.findIndex(p => p.id === platillo.id);
     if (index !== -1) {
       this.platillos[index] = platillo;
     }
-    return of(undefined);
-    // Lógica para actualizar el platillo en una API externa
-    // Ejemplo con HttpClient:
-    // return this.http.put(`ruta-de-tu-api/platillos/${platillo.id}`, platillo);
+    //return of(undefined);
+   
+        return this.platillos$
+                   .pipe(
+                       take(1),
+                       switchMap(platillos => this._httpClient.patch<Platillo>('https://api-rest-restaurantec-production.up.railway.app/api/dishes/'+id, platillo).pipe(
+                           map((tareaActualizada) => {
+
+                               // Busca el indice de la tarea actualizada
+                               const index = platillos.findIndex(item => item.id === id);
+
+                               // Actualiza la tarea
+                               platillos[index] = tareaActualizada;
+
+                               // Actualiza la tarea del observable
+                               this._objetoPlatillos.next(platillos);
+
+                               // Retorna la tarea actualizada
+                               return tareaActualizada;
+                           })
+                       ))
+                   );
+
   }
 
-  delete(platillo: Platillo): Observable<void> {
-    const index = this.platillos.findIndex(p => p.id === platillo.id);
-    if (index !== -1) {
-      this.platillos.splice(index, 1);
-    }
-    return of(undefined);
-    // Lógica para eliminar el platillo en una API externa
-    // Ejemplo con HttpClient:
-    // return this.http.delete(`ruta-de-tu-api/platillos/${platillo.id}`);
+  // delete(platillo: Platillo): Observable<void> {
+  //   const index = this.platillos.findIndex(p => p.id === platillo.id);
+  //   if (index !== -1) {
+  //     this.platillos.splice(index, 1);
+  //   }
+  //   return of(undefined);
+  //   // Lógica para eliminar el platillo en una API externa
+  //   // Ejemplo con HttpClient:
+  //   // return this.http.delete(`ruta-de-tu-api/platillos/${platillo.id}`);
+  // }
+
+  deletePlatillo(id: string): Observable<any> {
+    return this.platillos$.pipe(
+      take(1),
+      switchMap(platillos => this._httpClient.delete
+        ('https://api-rest-restaurantec-production.up.railway.app/api/dishes/'+id).pipe(
+          map((fueEliminado) => {
+
+              //busca el indice de la tarea eliminada dentro del objeto observable
+              const index = platillos.findIndex(item => item.id === id);
+
+              // elimina la tarea
+              platillos.splice(index, 1);
+
+              console.log(platillos);
+
+              // Actualiza la tarea dentro del objeto observable
+              this._objetoPlatillos.next(platillos);
+
+              // Retorna el status de la eliminación
+              return fueEliminado;
+          })
+      ))
+  );
   }
+
 }

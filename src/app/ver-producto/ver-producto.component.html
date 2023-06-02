@@ -28,7 +28,7 @@
             <td>{{ platillo.costo }}</td>
             <td>
               <button class="btn btn-danger" (click)="eliminarPlatillo(platillo.id)">Eliminar</button>
-              <button class="btn btn-primary" (click)="editarPlatillo(platillo.id)">Editar</button>
+              <button class="btn btn-primary" [routerLink]="['actualizarProducto/'+platillo.id]">Editar</button>
             </td>
           </tr>
         </tbody>

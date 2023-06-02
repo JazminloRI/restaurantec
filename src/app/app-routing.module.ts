@@ -6,6 +6,8 @@ import { ContactoComponent } from './contacto/contacto.component';
 import { EliminarProductoComponent } from './eliminar-producto/eliminar-producto.component';
 import { VerProductoComponent } from './ver-producto/ver-producto.component';
 import { BuscadorComponent } from './buscador/buscador.component';
+import { ActualizarProductoComponent } from './actualizar-producto/actualizar-producto.component';
+import { ProductoResolver } from './resolvers/producto.resolver';
 
 const routes: Routes = [
   { path :'' ,redirectTo:'home' , pathMatch:'full'},
@@ -15,6 +17,8 @@ const routes: Routes = [
   { path: 'eliminarProducto', component: EliminarProductoComponent },
   { path: 'verProducto', component: VerProductoComponent },
   { path: 'buscarProducto', component: BuscadorComponent },
+  { path: 'verProducto/actualizarProducto/:id', component: ActualizarProductoComponent, 
+  resolve: {producto: ProductoResolver} },
 ];
 
 @NgModule({

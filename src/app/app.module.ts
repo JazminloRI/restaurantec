@@ -11,7 +11,9 @@ import { EliminarProductoComponent } from './eliminar-producto/eliminar-producto
 import { ContactoComponent } from './contacto/contacto.component';
 import { MenuComponent } from './menu/menu.component';
 import { BuscadorComponent } from './buscador/buscador.component';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { ActualizarProductoComponent } from './actualizar-producto/actualizar-producto.component';
 
 
 @NgModule({
@@ -24,13 +26,16 @@ import { FormsModule } from '@angular/forms';
     ContactoComponent,
     MenuComponent,
     BuscadorComponent,
-    FormsModule,
+    ActualizarProductoComponent
 
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
